@@ -46,7 +46,7 @@
                 </executions>
                 <configuration>
                         <wsdlUrls>
-                            <wsdlUrl>http://localhost:8080/Interface?wsdl</wsdlUrl>
+                            <wsdlUrl>http://localhost:8080/WSInterface?wsdl</wsdlUrl>
                         </wsdlUrls>
                     <packageName>it.uniroma1.generatedsource</packageName>
                     <sourceDestDir>
