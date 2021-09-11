@@ -1,5 +1,5 @@
 
-package soapwsclient.generated;
+package it.uniroma1.generatedsource;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "WSImplService", targetNamespace = "http://soapws.softeng.sapienza.it/", wsdlLocation = "http://localhost:8080/WSInterface?wsdl")
+@WebServiceClient(name = "WSImplService", targetNamespace = "http://soapws.softeng.sapienza.it/", wsdlLocation = "http://localhost:7070/WSInterface?wsdl")
 public class WSImplService
     extends Service
 {
@@ -30,7 +30,7 @@ public class WSImplService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost:8080/WSInterface?wsdl");
+            url = new URL("http://localhost:7070/WSInterface?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }
