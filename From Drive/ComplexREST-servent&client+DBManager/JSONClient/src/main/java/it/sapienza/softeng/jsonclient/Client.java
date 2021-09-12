@@ -11,11 +11,8 @@ import java.net.URL;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.OutputStream;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 
 /**
@@ -25,25 +22,21 @@ import org.apache.http.entity.StringEntity;
 public class Client {
 
     private static final String BASE_URL = "http://localhost:8080/fligths/";
-    private static CloseableHttpClient client;
 
     public static void main(String[] args) throws IOException {
-        client = HttpClients.createDefault();
+        CloseableHttpClient client = HttpClients.createDefault();
 
         // Example GET
-        
         ObjectMapper mapper = new ObjectMapper();
         URL url = new URL(BASE_URL + "2");
         
         InputStream input = url.openStream();
         
-        Fligth fl = (Fligth)mapper.readValue(input, Fligth.class);        
+        Fligth fl = mapper.readValue(input, Fligth.class);
         System.out.println(fl);
         
 
         // Example POST/PUT
-        
-        
         ObjectMapper objectMapper = new ObjectMapper();
         Fligth newFl = new Fligth();
         
@@ -62,7 +55,7 @@ public class Client {
         System.out.println(response);
         
         InputStream input2 = url.openStream();
-        fl = (Fligth) mapper.readValue(input2, Fligth.class);
+        fl = mapper.readValue(input2, Fligth.class);
         System.out.println(fl);
     }
 }

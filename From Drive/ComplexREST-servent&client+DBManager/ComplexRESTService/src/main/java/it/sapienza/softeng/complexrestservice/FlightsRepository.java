@@ -1,13 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.sapienza.softeng.complexrestservice;
-
-/**
- * @author studente
- */
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,8 +10,8 @@ import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("/fligths")
-public class FligthsRepository {
+@Path("/flights")
+public class FlightsRepository {
 
     private Connection conn;
      
@@ -46,27 +37,26 @@ public class FligthsRepository {
             try {
                 Class.forName("org.sqlite.JDBC");
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(FligthsRepository.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FlightsRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conn
-                    = DriverManager.getConnection("jdbc:sqlite:" + pos);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + pos);
         } catch (SQLException ex) {
-            Logger.getLogger(FligthsRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FlightsRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @GET
-    @Path("{fligthId}")
+    @Path("{flightId}")
     @Produces("application/json")
-    public Fligth getFligth(@PathParam("fligthId") int fligthId) {
+    public Fligth getFlight(@PathParam("flightId") int fligthId) {
         return findById(fligthId);
     }
 
     @PUT
-    @Path("{fligthId}")
+    @Path("{flightId}")
     @Consumes("application/json")
-    public Response updateFligth(@PathParam("fligthId") int fligthId, Fligth fligth) {
-        Fligth existing = findById(fligthId);
+    public Response updateFligth(@PathParam("flightId") int flightId, Fligth fligth) {
+        Fligth existing = findById(flightId);
         if (existing == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -74,7 +64,7 @@ public class FligthsRepository {
             return Response.notModified().build();
         }
         // fligths.put(fligthId, fligth);
-        update(fligthId, fligth);
+        update(flightId, fligth);
         return Response.ok().build();
     }
 
@@ -90,11 +80,11 @@ public class FligthsRepository {
                 fl = new Fligth();
                 fl.setId(Integer.parseInt(rs.getString("id")));
                 fl.setName(rs.getString("name"));
-                Logger.getLogger(FligthsRepository.class.getName()).log(Level.INFO, "Accessed : " + fl);
+                Logger.getLogger(FlightsRepository.class.getName()).log(Level.INFO, "Accessed : " + fl);
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(FligthsRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FlightsRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
          
         /* simple version 
@@ -116,11 +106,11 @@ public class FligthsRepository {
 
             int affectedRow = stat.executeUpdate();
             if (affectedRow == 1) {
-                Logger.getLogger(FligthsRepository.class.getName()).log(Level.FINE, "Updated : " + fligth);
+                Logger.getLogger(FlightsRepository.class.getName()).log(Level.FINE, "Updated : " + fligth);
                 return;
             } else throw new RuntimeException();
         } catch (Exception ex) {
-            Logger.getLogger(FligthsRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FlightsRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
