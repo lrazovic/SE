@@ -1,65 +1,48 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.uniroma1.jmsstockmarketservant;
 
-import javax.jms.*;
-import javax.naming.*;
-
-import java.util.*;
-import java.util.logging.Logger;
-
 import org.slf4j.LoggerFactory;
+
+import javax.jms.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Properties;
+import java.util.Random;
+import java.util.logging.Logger;
 
 public class NotificatoreAcquisto implements MessageListener {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(NotificatoreAcquisto.class);
-
+    private final Random randomGen = new Random();
     Properties properties = null;
     Context jndiContext = null;
-    private TopicConnectionFactory connectionFactory = null;
     private TopicConnection connection = null;
     private TopicSession session = null;
     private Topic destination = null;
-    private TopicSubscriber subscriber = null;
     private TopicPublisher publisher = null;
 
-    private Random randomGen = new Random();
-
     public void start() throws NamingException, JMSException {
-
-        InitialContext ctx = null;
-
+        InitialContext ctx;
         try {
-
             properties = new Properties();
             properties.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
             properties.setProperty(Context.PROVIDER_URL, "tcp://localhost:61616");
             jndiContext = new InitialContext(properties);
 
         } catch (NamingException e) {
-            LOG.info("ERROR in JNDI: " + e.toString());
+            LOG.info("ERROR in JNDI: " + e);
             System.exit(1);
         }
 
 
         ctx = new InitialContext(properties);
-        this.connectionFactory =
-                (TopicConnectionFactory) ctx.lookup("ConnectionFactory");
-        this.destination =
-                (Topic) ctx.lookup("dynamicTopics/Ordini");
+        TopicConnectionFactory connectionFactory = (TopicConnectionFactory) ctx.lookup("ConnectionFactory");
+        this.destination = (Topic) ctx.lookup("dynamicTopics/Ordini");
 
-        this.connection =
-                this.connectionFactory.createTopicConnection();
-        this.session =
-                this.connection.createTopicSession(
-                        false, Session.AUTO_ACKNOWLEDGE
-                );
-        this.subscriber =
-                this.session.createSubscriber(this.destination, null, true);
-        this.publisher =
-                this.session.createPublisher(this.destination);
+        this.connection = connectionFactory.createTopicConnection();
+        this.session = this.connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+        TopicSubscriber subscriber = this.session.createSubscriber(this.destination, null, true);
+        this.publisher = this.session.createPublisher(this.destination);
         this.connection.start();
 
         Logger.getLogger(
@@ -71,8 +54,8 @@ public class NotificatoreAcquisto implements MessageListener {
 
     public void onMessage(Message mex) {
         TextMessage message;
-        String utente = null;
-        String nome = null;
+        String utente;
+        String nome;
         float prezzo;
         int quantita;
         boolean status = randomGen.nextFloat() < 0.5;
@@ -87,8 +70,7 @@ public class NotificatoreAcquisto implements MessageListener {
             return;
         }
         try {
-            session = connection.createTopicSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
+            session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
             publisher = session.createPublisher(destination);
             message = session.createTextMessage();
             message.setStringProperty("Utente", utente);

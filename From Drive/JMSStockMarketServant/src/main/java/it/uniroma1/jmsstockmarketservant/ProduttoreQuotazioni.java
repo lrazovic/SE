@@ -1,17 +1,17 @@
 package it.uniroma1.jmsstockmarketservant;
 
-import javax.jms.*;
-import javax.naming.*;
-
-import java.util.Properties;
-import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jms.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Properties;
+import java.util.Random;
+
 public class ProduttoreQuotazioni {
-    final String titoli[] = {"Telecom", "Finmeccanica", "Banca_Intesa",
-            "Oracle", "Parmalat", "Mondadori", "Vodafone", "Barilla"};
+    final String[] titoli = {"Telecom", "Finmeccanica", "Banca_Intesa", "Oracle", "Parmalat", "Mondadori", "Vodafone", "Barilla"};
 
     private String scegliTitolo() {
         int whichMsg;
@@ -23,20 +23,18 @@ public class ProduttoreQuotazioni {
 
     private float valore() {
         Random randomGen = new Random();
-        float val = randomGen.nextFloat() * this.titoli.length * 10;
-        return val;
+        return randomGen.nextFloat() * this.titoli.length * 10;
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(ProduttoreQuotazioni.class);
 
-    public void start() throws NamingException, JMSException {
-
+    public void start() {
         Context jndiContext = null;
         ConnectionFactory connectionFactory = null;
         Connection connection = null;
-        Session session = null;
+        Session session;
         Destination destination = null;
-        MessageProducer producer = null;
+        MessageProducer producer;
         String destinationName = "dynamicTopics/Quotazioni";
 
         /*
@@ -46,13 +44,12 @@ public class ProduttoreQuotazioni {
         try {
 
             Properties props = new Properties();
-
             props.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
             props.setProperty(Context.PROVIDER_URL, "tcp://localhost:61616");
             jndiContext = new InitialContext(props);
 
         } catch (NamingException e) {
-            LOG.info("ERROR in JNDI: " + e.toString());
+            LOG.info("ERROR in JNDI: " + e);
             System.exit(1);
         }
 
@@ -77,13 +74,9 @@ public class ProduttoreQuotazioni {
             connection = connectionFactory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             producer = session.createProducer(destination);
-
-
-            TextMessage message = null;
-            String messageType = null;
-
+            TextMessage message;
+            String messageType;
             message = session.createTextMessage();
-
             float quotazione;
             int i = 0;
             while (true) {
@@ -115,6 +108,7 @@ public class ProduttoreQuotazioni {
                 try {
                     connection.close();
                 } catch (JMSException e) {
+                    LOG.info("Exception occurred: " + e);
                 }
             }
         }
