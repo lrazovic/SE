@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class BookListImpl extends BookListGrpc.BookListImplBase {
     private final Logger logger;
-    private Connection conn;
+    private final Connection conn;
 
     public BookListImpl(String databasePath) {
         // Create the Logger
@@ -51,7 +51,6 @@ public class BookListImpl extends BookListGrpc.BookListImplBase {
                 bookBuilder.setPublication(rs.getString("yob"));
                 bookBuilder.setAuthor(rs.getString("name"));
                 Book book = bookBuilder.build();
-                System.out.println(book);
                 rs.close();
                 responseObserver.onNext(book);
                 responseObserver.onCompleted();

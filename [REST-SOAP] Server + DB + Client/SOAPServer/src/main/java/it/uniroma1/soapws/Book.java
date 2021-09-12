@@ -1,4 +1,4 @@
-package it.sapienza.softeng.soapws;
+package it.uniroma1.soapws;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;

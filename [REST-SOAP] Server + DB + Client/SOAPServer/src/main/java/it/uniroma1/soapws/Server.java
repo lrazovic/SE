@@ -8,6 +8,5 @@ public class Server {
         WSImpl implementor = new WSImpl();
         String address = "http://0.0.0.0:7070/WSInterface";
         Endpoint.publish(address, implementor);
-        while(true) {}
     }
 }

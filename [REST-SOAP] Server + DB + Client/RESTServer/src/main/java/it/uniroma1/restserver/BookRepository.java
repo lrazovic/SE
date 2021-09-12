@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 
 @Path("/books")
 @Produces("text/xml")
@@ -45,13 +44,14 @@ public class BookRepository {
         Book fl = null;
         List<Book> list = new ArrayList<>();
         try {
-            stat = conn.prepareStatement("select * from books");
+            stat = conn.prepareStatement("select * from books, authors where authors.authorId=books.authorId");
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
                 fl = new Book();
                 fl.setId(Integer.parseInt(rs.getString("id")));
                 fl.setTitle(rs.getString("title"));
                 fl.setYob(rs.getString("yob"));
+                fl.setAuthor(rs.getString("name"));
                 list.add(fl);
                 Logger.getLogger(BookRepository.class.getName()).log(Level.INFO, "Accessed : " + fl);
             }

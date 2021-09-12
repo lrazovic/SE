@@ -1,8 +1,8 @@
-package it.sapienza.softeng.soapws;
+package it.uniroma1.soapws;
 import javax.jws.WebService;
 
 @WebService
 public interface WSInterface {
-    public String getBookDetails(int i);
+    public Book getBookDetails(int i);
     public String getDeliveryDate(String s, int i);
 }

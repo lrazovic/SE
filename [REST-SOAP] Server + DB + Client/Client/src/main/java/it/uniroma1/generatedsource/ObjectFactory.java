@@ -24,16 +24,33 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetBookDetails_QNAME = new QName("http://soapws.softeng.sapienza.it/", "getBookDetails");
-    private final static QName _GetBookDetailsResponse_QNAME = new QName("http://soapws.softeng.sapienza.it/", "getBookDetailsResponse");
-    private final static QName _GetDeliveryDate_QNAME = new QName("http://soapws.softeng.sapienza.it/", "getDeliveryDate");
-    private final static QName _GetDeliveryDateResponse_QNAME = new QName("http://soapws.softeng.sapienza.it/", "getDeliveryDateResponse");
+    private final static QName _Book_QNAME = new QName("http://soapws.uniroma1.it/", "book");
+    private final static QName _GetBookDetails_QNAME = new QName("http://soapws.uniroma1.it/", "getBookDetails");
+    private final static QName _GetBookDetailsResponse_QNAME = new QName("http://soapws.uniroma1.it/", "getBookDetailsResponse");
+    private final static QName _GetDeliveryDate_QNAME = new QName("http://soapws.uniroma1.it/", "getDeliveryDate");
+    private final static QName _GetDeliveryDateResponse_QNAME = new QName("http://soapws.uniroma1.it/", "getDeliveryDateResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: it.uniroma1.generatedsource
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link Book }
+     * 
+     */
+    public Book createBook() {
+        return new Book();
+    }
+
+    /**
+     * Create an instance of {@link Book.Sellers }
+     * 
+     */
+    public Book.Sellers createBookSellers() {
+        return new Book.Sellers();
     }
 
     /**
@@ -69,6 +86,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Book.Sellers.Entry }
+     * 
+     */
+    public Book.Sellers.Entry createBookSellersEntry() {
+        return new Book.Sellers.Entry();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Book }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link Book }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://soapws.uniroma1.it/", name = "book")
+    public JAXBElement<Book> createBook(Book value) {
+        return new JAXBElement<Book>(_Book_QNAME, Book.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetBookDetails }{@code >}
      * 
      * @param value
@@ -76,7 +114,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link GetBookDetails }{@code >}
      */
-    @XmlElementDecl(namespace = "http://soapws.softeng.sapienza.it/", name = "getBookDetails")
+    @XmlElementDecl(namespace = "http://soapws.uniroma1.it/", name = "getBookDetails")
     public JAXBElement<GetBookDetails> createGetBookDetails(GetBookDetails value) {
         return new JAXBElement<GetBookDetails>(_GetBookDetails_QNAME, GetBookDetails.class, null, value);
     }
@@ -89,7 +127,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link GetBookDetailsResponse }{@code >}
      */
-    @XmlElementDecl(namespace = "http://soapws.softeng.sapienza.it/", name = "getBookDetailsResponse")
+    @XmlElementDecl(namespace = "http://soapws.uniroma1.it/", name = "getBookDetailsResponse")
     public JAXBElement<GetBookDetailsResponse> createGetBookDetailsResponse(GetBookDetailsResponse value) {
         return new JAXBElement<GetBookDetailsResponse>(_GetBookDetailsResponse_QNAME, GetBookDetailsResponse.class, null, value);
     }
@@ -102,7 +140,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link GetDeliveryDate }{@code >}
      */
-    @XmlElementDecl(namespace = "http://soapws.softeng.sapienza.it/", name = "getDeliveryDate")
+    @XmlElementDecl(namespace = "http://soapws.uniroma1.it/", name = "getDeliveryDate")
     public JAXBElement<GetDeliveryDate> createGetDeliveryDate(GetDeliveryDate value) {
         return new JAXBElement<GetDeliveryDate>(_GetDeliveryDate_QNAME, GetDeliveryDate.class, null, value);
     }
@@ -115,7 +153,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link GetDeliveryDateResponse }{@code >}
      */
-    @XmlElementDecl(namespace = "http://soapws.softeng.sapienza.it/", name = "getDeliveryDateResponse")
+    @XmlElementDecl(namespace = "http://soapws.uniroma1.it/", name = "getDeliveryDateResponse")
     public JAXBElement<GetDeliveryDateResponse> createGetDeliveryDateResponse(GetDeliveryDateResponse value) {
         return new JAXBElement<GetDeliveryDateResponse>(_GetDeliveryDateResponse_QNAME, GetDeliveryDateResponse.class, null, value);
     }

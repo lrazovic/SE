@@ -16,12 +16,26 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "WSInterface", targetNamespace = "http://soapws.softeng.sapienza.it/")
+@WebService(name = "WSInterface", targetNamespace = "http://soapws.uniroma1.it/")
 @XmlSeeAlso({
     ObjectFactory.class
 })
 public interface WSInterface {
 
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns it.uniroma1.generatedsource.Book
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getBookDetails", targetNamespace = "http://soapws.uniroma1.it/", className = "it.uniroma1.generatedsource.GetBookDetails")
+    @ResponseWrapper(localName = "getBookDetailsResponse", targetNamespace = "http://soapws.uniroma1.it/", className = "it.uniroma1.generatedsource.GetBookDetailsResponse")
+    public Book getBookDetails(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
 
     /**
      * 
@@ -32,26 +46,12 @@ public interface WSInterface {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getDeliveryDate", targetNamespace = "http://soapws.softeng.sapienza.it/", className = "it.uniroma1.generatedsource.GetDeliveryDate")
-    @ResponseWrapper(localName = "getDeliveryDateResponse", targetNamespace = "http://soapws.softeng.sapienza.it/", className = "it.uniroma1.generatedsource.GetDeliveryDateResponse")
+    @RequestWrapper(localName = "getDeliveryDate", targetNamespace = "http://soapws.uniroma1.it/", className = "it.uniroma1.generatedsource.GetDeliveryDate")
+    @ResponseWrapper(localName = "getDeliveryDateResponse", targetNamespace = "http://soapws.uniroma1.it/", className = "it.uniroma1.generatedsource.GetDeliveryDateResponse")
     public String getDeliveryDate(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         int arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getBookDetails", targetNamespace = "http://soapws.softeng.sapienza.it/", className = "it.uniroma1.generatedsource.GetBookDetails")
-    @ResponseWrapper(localName = "getBookDetailsResponse", targetNamespace = "http://soapws.softeng.sapienza.it/", className = "it.uniroma1.generatedsource.GetBookDetailsResponse")
-    public String getBookDetails(
-        @WebParam(name = "arg0", targetNamespace = "")
-        int arg0);
 
 }

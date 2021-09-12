@@ -55,7 +55,7 @@
                         <configuration>
                             <classifier>with-deps</classifier>
                             <mainClass>
-                                it.sapienza.softeng.soapws.Server
+                                it.uniroma1.soapws.Server
                             </mainClass>
                         </configuration>
                     </execution>

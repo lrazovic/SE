@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getBookDetailsResponse complex type.
+ * <p>Java class for getDeliveryDateResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getBookDetailsResponse"&gt;
+ * &lt;complexType name="getDeliveryDateResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="return" type="{http://soapws.uniroma1.it/}book" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,23 +27,23 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getBookDetailsResponse", propOrder = {
+@XmlType(name = "getDeliveryDateResponse", propOrder = {
     "_return"
 })
-public class GetBookDetailsResponse {
+public class GetDeliveryDateResponse {
 
     @XmlElement(name = "return")
-    protected Book _return;
+    protected String _return;
 
     /**
      * Gets the value of the return property.
      * 
      * @return
      *     possible object is
-     *     {@link Book }
+     *     {@link String }
      *     
      */
-    public Book getReturn() {
+    public String getReturn() {
         return _return;
     }
 
@@ -52,10 +52,10 @@ public class GetBookDetailsResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link Book }
+     *     {@link String }
      *     
      */
-    public void setReturn(Book value) {
+    public void setReturn(String value) {
         this._return = value;
     }
 

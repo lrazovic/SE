@@ -17,7 +17,7 @@ public class Server {
         factoryBean.setResourceProvider(new SingletonResourceProvider(fr));
         factoryBean.setAddress("http://localhost:8080/");
 
-        List<Object> providers = new ArrayList<Object>();
+        List<Object> providers = new ArrayList<>();
         providers.add(new JacksonJaxbJsonProvider());
         factoryBean.setProviders(providers);
 
@@ -26,11 +26,9 @@ public class Server {
         restFactory.setBus(factoryBean.getBus());
         manager.registerBindingFactory(JAXRSBindingFactory.JAXRS_BINDING_ID, restFactory);
 
-        org.apache.cxf.endpoint.Server server = factoryBean.create();
+        factoryBean.create();
 
         System.out.println("Server ready...");
 
-        while (true) {
-        }
     }
 }

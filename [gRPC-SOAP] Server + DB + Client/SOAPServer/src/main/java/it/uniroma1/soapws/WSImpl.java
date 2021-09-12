@@ -10,7 +10,6 @@ public class WSImpl implements WSInterface {
 
     private final Map<Integer, Book> books = new LinkedHashMap<>();
 
-
     public WSImpl() {
         Book b1 = new Book();
         Map<String, String> sellers = new HashMap<>();
@@ -60,7 +59,7 @@ public class WSImpl implements WSInterface {
             return "Book not found";
         } else {
             Book book = books.get(bookId);
-            return book.getSellers().getOrDefault(seller, "Seller not found");
+            return book.getSellers().getOrDefault(seller, "Seller not found for book with ID" + bookId);
         }
     }
 }
