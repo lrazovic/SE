@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "it.uniroma1.gRPCExam";
+
+package it.uniroma1.gRPCExam;
+
+message Book {
+  string title = 1;
+  string author = 2;
+  string publication = 3;
+  int32 id = 4;
+}
+
+service BookList {
+  rpc getBooks(Input) returns (stream Book);
+  rpc getBookDetails(BookId) returns (Book);
+}
+
+message Input { }
+message BookId {
+  string id = 1;
+}
