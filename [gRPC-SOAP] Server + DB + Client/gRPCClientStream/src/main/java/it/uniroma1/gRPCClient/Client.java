@@ -20,60 +20,68 @@ import static it.uniroma1.gRPCExam.BookListGrpc.newBlockingStub;
 
 public class Client {
     private static final int PORT = 8080;
+    private static WSInterface port;
+    private static ManagedChannel channel;
+    private static WSImplService service;
+    private static Logger logger;
 
     public static void main(String[] args) {
         // Create a Logger
-        Logger logger = Logger.getLogger(Client.class.getName());
-
-        while(true){
+        logger = Logger.getLogger(Client.class.getName());
+        channel = ManagedChannelBuilder.forAddress("localhost", PORT)
+                .usePlaintext()
+                .build();
+        service = new WSImplService();
+        port = service.getWSImplPort();
+        while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Choose a command in the following list: [list, details, date, exit]");
             String command = scanner.next();
-            if(command.equals("list")){
-                System.out.println("Getting all books along with their details");
-                callRPC(logger);
-            }
-            else if(command.equals("details")){
-                System.out.println("Choose a book id");
-                String id = scanner.next();
-                System.out.println("Getting the chosen book along with its details");
-                Book b2 = getBookDetailsRPC(logger, id);
-                int bookId = Integer.parseInt(id);
-                it.uniroma1.generatedsource.Book b1 = getBookDetailsSOAP(bookId);
-                List<it.uniroma1.generatedsource.Book.Sellers.Entry> sellers = b1.getSellers().getEntry();
-                System.out.println("Book ID: " + b1.getId());
-                System.out.println("Book Title: " +b2.getTitle());
-                System.out.println("Book Price: " + b1.getPrice());
-                System.out.println("Book Author: " + b2.getAuthor());
-                System.out.println("Book Year of Publication: " + b2.getPublication());
-                for (it.uniroma1.generatedsource.Book.Sellers.Entry seller : sellers) {
-                    System.out.println("Seller: " + seller.getKey() + " Date: " + seller.getValue());
+            switch (command) {
+                case "list":
+                    System.out.println("Getting all books along with their details");
+                    callRPC();
+                    break;
+                case "details": {
+                    System.out.println("Choose a book id");
+                    String id = scanner.next();
+                    System.out.println("Getting the chosen book along with its details");
+                    Book b2 = getBookDetailsRPC(id);
+                    int bookId = Integer.parseInt(id);
+                    it.uniroma1.generatedsource.Book b1 = getBookDetailsSOAP(bookId);
+                    List<it.uniroma1.generatedsource.Book.Sellers.Entry> sellers = b1.getSellers().getEntry();
+                    System.out.println("Book ID: " + b1.getId());
+                    System.out.println("Book Title: " + b2.getTitle());
+                    System.out.println("Book Price: " + b1.getPrice());
+                    System.out.println("Book Author: " + b2.getAuthor());
+                    System.out.println("Book Year of Publication: " + b2.getPublication());
+                    for (it.uniroma1.generatedsource.Book.Sellers.Entry seller : sellers) {
+                        System.out.println("Seller: " + seller.getKey() + " Date: " + seller.getValue());
+                    }
+                    break;
                 }
-            }
-            else if(command.equals("date")){
-                System.out.println("Choose a book id:");
-                String id = scanner.next();
-                System.out.println("Choose one of its sellers:");
-                String seller = scanner.next();
-                System.out.println("Getting the estimated date for a given book-seller pair");
-                String estimate = getEstimatedDate(Integer.parseInt(id), seller);
-                System.out.println(estimate);
-            }
-            else if(command.equals("exit")){
-                System.out.println("Client shutdown");
-                scanner.close();
-                System.exit(0);
-            }
-            else{
-                System.out.println("Not a valid command");
+                case "date": {
+                    System.out.println("Choose a book id:");
+                    String id = scanner.next();
+                    System.out.println("Choose one of its sellers:");
+                    String seller = scanner.next();
+                    System.out.println("Getting the estimated date for a given book-seller pair");
+                    String estimate = getEstimatedDateSOAP(Integer.parseInt(id), seller);
+                    System.out.println(estimate);
+                    break;
+                }
+                case "exit":
+                    System.out.println("Client shutdown");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Not a valid command");
+                    break;
             }
         }
     }
 
-    private static void callRPC(Logger logger) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", PORT)
-                .usePlaintext()
-                .build();
+    private static void callRPC() {
         logger.log(Level.INFO, "gRPC Client started @ localhost:{0,number,#}", PORT);
         BookListGrpc.BookListBlockingStub blockingStub = newBlockingStub(channel);
         Input request = Input.newBuilder().build();
@@ -86,13 +94,9 @@ public class Client {
         while (booklist.hasNext()) {
             System.out.println(booklist.next());
         }
-        channel.shutdown();
     }
 
-    private static Book getBookDetailsRPC(Logger logger, String bookId) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", PORT)
-                .usePlaintext()
-                .build();
+    private static Book getBookDetailsRPC(String bookId) {
         logger.log(Level.INFO, "gRPC Client started @ localhost:{0,number,#}", PORT);
         BookListGrpc.BookListBlockingStub blockingStub = newBlockingStub(channel);
         BookId request = BookId.newBuilder().setId(bookId).build();
@@ -102,20 +106,15 @@ public class Client {
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
         }
-        channel.shutdown();
         return book;
     }
 
 
-    private static it.uniroma1.generatedsource.Book getBookDetailsSOAP(int bookId){
-        WSImplService service = new WSImplService();
-        WSInterface port = service.getWSImplPort();
+    private static it.uniroma1.generatedsource.Book getBookDetailsSOAP(int bookId) {
         return port.getBookDetails(bookId);
     }
 
-    private static String getEstimatedDate(int bookId, String seller){
-        WSImplService service = new WSImplService();
-        WSInterface port = service.getWSImplPort();
+    private static String getEstimatedDateSOAP(int bookId, String seller) {
         return port.getDeliveryDate(seller, bookId);
     }
 
